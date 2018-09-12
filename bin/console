@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "rangops"
+
+class Range
+  include Rangops::Operators
+end
+
+require "irb"
+IRB.start(__FILE__)
