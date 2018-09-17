@@ -1,4 +1,17 @@
 module Rangops
+
+  # Module defining basic set operations that can be performed
+  # on ranges.
+  #
+  # * union
+  # * intersection
+  # * relative complement
+  # * symmetric difference
+  # along with some convenient aliases.
+  # 
+  # Operations involving 2 ranges require them to overlap to produce result.
+  # If the result of operation cannot be expressed as single range,
+  # an array of ranges is returned.
   module Operators
 
     # Set union of 2 ranges.  Returns nil if ranges don't overlap.
