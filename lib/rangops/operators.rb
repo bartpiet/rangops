@@ -33,6 +33,15 @@ module Rangops
       Range.new(new_begin, upper.end, upper.exclude_end?)
     end
 
+    # Symmetric difference of 2 ranges.
+    def difference(other)
+      validate_operand(other)
+      return nil unless overlaps?(other)
+
+      lower, upper = Utils.sort_by_end(self, other)
+      [Range.new(lower.begin, upper.begin),
+      Range.new(lower.end, upper.end, upper.exclude_end?)]
+    end
 
     private
       def validate_operand(other)
