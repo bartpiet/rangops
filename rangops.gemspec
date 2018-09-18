@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Bartosz Pietraszko"]
   spec.email         = ["bartosz.pietraszko@gmail.com"]
 
-  spec.summary       = ''
-  spec.homepage      = ""
+  spec.summary       = 'Simple Ruby extension library for set operations on ranges.'
+  spec.homepage      = "https://vojski.github.io/rangops/"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
