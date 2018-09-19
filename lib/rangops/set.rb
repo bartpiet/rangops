@@ -13,7 +13,7 @@ module Rangops
   # Operations involving 2 ranges require them to overlap to produce result.
   # If the result of operation cannot be expressed as single range,
   # an array of ranges is returned.
-  module Operators
+  module Set
 
     # Union of 2 ranges. Returns a range covering sum of all elements
     # belonging to both ranges. Returns `nil` if ranges don't overlap.
@@ -78,6 +78,42 @@ module Rangops
       [Range.new(lower.begin, upper.begin),
       Range.new(lower.end, upper.end, upper.exclude_end?)]
     end
+
+
+    unless Range.respond_to?(:overlaps?)
+      # Taken from ActiveSupport - it's not in dependencies,
+      # and the method itself is too useful to be left out.
+      def overlaps?(other)
+        cover?(other.first) || other.cover?(first)
+      end
+    end
+
+    # Checks if `self` is superset of `other`.
+    def superset?(other)
+      cover?(other.begin) && cover?(other.end)
+    end
+    alias_method :contains?, :superset?
+
+    # Checks if `self` is proper superset of `other`,
+    # i.e. is superset and has elements not present
+    # in `other`.
+    def proper_superset?(other)
+      superset?(other) && self != other
+    end
+
+    # Checks if `self` is subset of `other`.
+    def subset?(other)
+      other.superset?(self)
+    end
+    alias_method :is_contained_by?, :subset?
+
+    # Checks if `self` is proper subset of `other`,
+    # i.e. is subset and has elements not present
+    # in `other`.
+    def proper_subset?(other)
+      subset?(other) && self != other
+    end
+
 
     private
       def validate_operand(other)
