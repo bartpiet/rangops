@@ -4,7 +4,7 @@ require "bundler/setup"
 require "rangops"
 
 class Range
-  include Rangops
+  include Rangops::Set
 end
 
 
