@@ -7,6 +7,7 @@ module Rangops
   # * intersection
   # * relative complement
   # * symmetric difference
+  #
   # along with some convenient aliases.
   # 
   # Operations involving 2 ranges require them to overlap to produce result.
@@ -14,7 +15,13 @@ module Rangops
   # an array of ranges is returned.
   module Operators
 
-    # Set union of 2 ranges.  Returns nil if ranges don't overlap.
+    # Union of 2 ranges. Returns a range covering sum of all elements
+    # belonging to both ranges. Returns `nil` if ranges don't overlap.
+    #
+    #     (1..10).union(5..15)
+    #     => 1..15
+    #     (1..10) | (5..15) # using pipe operator
+    #     => 1..15
     def union(other)
       validate_operand(other)
       return nil unless overlaps?(other)
@@ -25,7 +32,13 @@ module Rangops
     end
     alias_method :|, :union
 
-    # Set intersection of 2 ranges.  Returns nil if ranges don't overlap.
+    # Intersection of 2 ranges. Returns a range covering elements
+    # common to both ranges. Returns `nil` if ranges don't overlap.
+    #
+    #     (1..10).intersection(5..15)
+    #     => 5..10
+    #     (1..10) & (5..15) # using ampersand operator
+    #     => 5..10
     def intersection(other)
       validate_operand(other)
       return nil unless overlaps?(other)
@@ -36,7 +49,12 @@ module Rangops
     end
     alias_method :&, :intersection
 
-    # Relative complement of 2 ranges.
+    # Relative complement of 2 ranges. Returns a range covering
+    # elements from `other` that are not covered by `self`.
+    # Returns `nil` if ranges don't overlap.
+    #
+    #     (1..10).complement(5..15)
+    #     => 10..15
     def complement(other)
       validate_operand(other)
       return nil unless overlaps?(other)
@@ -46,7 +64,12 @@ module Rangops
       Range.new(new_begin, upper.end, upper.exclude_end?)
     end
 
-    # Symmetric difference of 2 ranges.
+    # Symmetric difference of 2 ranges. Returns ranges covering
+    # elements of both operands, excluding elements common for both
+    # of them. Returns `nil` if ranges don't overlap.
+    #
+    #     (1..10).difference(5..15)
+    #     => [1..5, 10..15]
     def difference(other)
       validate_operand(other)
       return nil unless overlaps?(other)

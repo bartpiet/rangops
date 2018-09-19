@@ -14,5 +14,6 @@ RDoc::Task.new do |rdoc|
   rdoc.rdoc_files.include('README.md', 'lib/*.rb', 'lib/**/*.rb')
   rdoc.rdoc_dir = 'docs'
   rdoc.title = 'Rangops'
+  rdoc.markup = 'markdown'
 end
 
