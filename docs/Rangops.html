@@ -56,34 +56,9 @@
   <div id="class-metadata">
     
     
-    <div id="includes-section" class="nav-section">
-  <h3>Included Modules</h3>
-
-  <ul class="link-list">
-  
-  
-    <li><a class="include" href="Rangops/Predicates.html">Rangops::Predicates</a>
-  
-  
-  
-    <li><a class="include" href="Rangops/Operators.html">Rangops::Operators</a>
-  
-  
-  </ul>
-</div>
-
     
-    <!-- Method Quickref -->
-<div id="method-list-section" class="nav-section">
-  <h3>Methods</h3>
-
-  <ul class="link-list" role="directory">
     
-    <li ><a href="#method-c-sort_by_end">::sort_by_end</a>
     
-  </ul>
-</div>
-
   </div>
 </nav>
 
@@ -121,49 +96,6 @@
     
 
     
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Class Methods</h3>
-       </header>
-
-    
-      <div id="method-c-sort_by_end" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">sort_by_end</span><span
-            class="method-args">(*ranges)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Sort ranges by their end value, respecting possible exclusions.</p>
-          
-          
-
-          
-          <div class="method-source-code" id="sort_by_end-source">
-            <pre><span class="ruby-comment"># File lib/rangops.rb, line 13</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">sort_by_end</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">ranges</span>)
-  <span class="ruby-identifier">ranges</span>.<span class="ruby-identifier">sort_by</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
-    [<span class="ruby-identifier">r</span>.<span class="ruby-identifier">end</span>, <span class="ruby-identifier">r</span>.<span class="ruby-identifier">exclude_end?</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-value">1</span>]
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-    </section>
-  
   </section>
 </main>
 

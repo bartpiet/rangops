@@ -1,7 +1,6 @@
-Tue, 18 Sep 2018 22:58:47 +0200
-README.md	Tue, 18 Sep 2018 22:54:50 +0200
-lib/rangops.rb	Sun, 16 Sep 2018 22:25:38 +0200
-lib/rangops/operators.rb	Tue, 18 Sep 2018 22:58:26 +0200
-lib/rangops/predicates.rb	Mon, 17 Sep 2018 01:03:23 +0200
+Wed, 19 Sep 2018 22:42:34 +0200
+README.md	Tue, 18 Sep 2018 23:23:53 +0200
+lib/rangops.rb	Wed, 19 Sep 2018 22:38:39 +0200
+lib/rangops/set.rb	Wed, 19 Sep 2018 22:25:22 +0200
 lib/rangops/utils.rb	Sun, 16 Sep 2018 22:25:14 +0200
 lib/rangops/version.rb	Wed, 12 Sep 2018 11:50:25 +0200
