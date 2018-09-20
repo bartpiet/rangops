@@ -66,11 +66,19 @@
     
     <li ><a href="#method-i-26">#&amp;</a>
     
+    <li ><a href="#method-i-2B">#+</a>
+    
+    <li ><a href="#method-i-2D">#-</a>
+    
     <li ><a href="#method-i-complement">#complement</a>
     
     <li ><a href="#method-i-contains-3F">#contains?</a>
     
     <li ><a href="#method-i-difference">#difference</a>
+    
+    <li ><a href="#method-i-disjoint-3F">#disjoint?</a>
+    
+    <li ><a href="#method-i-intersect-3F">#intersect?</a>
     
     <li ><a href="#method-i-intersection">#intersection</a>
     
@@ -114,7 +122,8 @@
 <p>symmetric difference</p>
 </li></ul>
 
-<p>along with some convenient aliases.</p>
+<p>along with some convenient aliases and predicates. Loosely follows
+conventions of <code>Set</code> module from standard library.</p>
 
 <p>Operations involving 2 ranges require them to overlap to produce result. If
 the result of operation cannot be expressed as single range, an array of
@@ -167,6 +176,62 @@ ranges is returned.</p>
       </div>
 
     
+      <div id="method-i-2B" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">+</span><span
+            class="method-args">(other)</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Set.html#method-i-union">union</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="method-i-2D" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">-</span><span
+            class="method-args">(other)</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Set.html#method-i-difference">difference</a>
+        </div>
+        
+      </div>
+
+    
       <div id="method-i-complement" class="method-detail ">
         
         <div class="method-heading">
@@ -191,7 +256,7 @@ ranges is returned.</p>
 
           
           <div class="method-source-code" id="complement-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 58</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 60</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">complement</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">validate_operand</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">overlaps?</span>(<span class="ruby-identifier">other</span>)
@@ -262,7 +327,7 @@ operands, excluding elements common for both of them. Returns
 
           
           <div class="method-source-code" id="difference-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 73</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">difference</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">validate_operand</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">overlaps?</span>(<span class="ruby-identifier">other</span>)
@@ -276,7 +341,72 @@ operands, excluding elements common for both of them. Returns
         </div>
 
         
+        <div class="aliases">
+          Also aliased as: <a href="Set.html#method-i-2D">-</a>
+        </div>
+        
 
+        
+      </div>
+
+    
+      <div id="method-i-disjoint-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">disjoint?</span><span
+            class="method-args">(other)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Opposite of <code>intersect?</code>.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="disjoint-3F-source">
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 96</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">disjoint?</span>(<span class="ruby-identifier">other</span>)
+  <span class="ruby-operator">!</span><span class="ruby-identifier">intersect?</span>(<span class="ruby-identifier">other</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-intersect-3F" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">intersect?</span><span
+            class="method-args">(other)</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Set.html#method-i-overlaps-3F">overlaps?</a>
+        </div>
         
       </div>
 
@@ -299,14 +429,14 @@ ranges. Returns <code>nil</code> if ranges don&#39;t overlap.</p>
 
 <pre>(1..10).intersection(5..15)
 =&gt; 5..10
-(1..10) &amp; (5..15) # using ampersand operator
+(1..10) &amp; (5..15)
 =&gt; 5..10</pre>
           
           
 
           
           <div class="method-source-code" id="intersection-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 42</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">intersection</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">validate_operand</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">overlaps?</span>(<span class="ruby-identifier">other</span>)
@@ -377,7 +507,7 @@ itself is too useful to be left out.</p>
 
           
           <div class="method-source-code" id="overlaps-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 86</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 89</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">overlaps?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">other</span>.<span class="ruby-identifier">first</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">first</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -385,6 +515,10 @@ itself is too useful to be left out.</p>
           
         </div>
 
+        
+        <div class="aliases">
+          Also aliased as: <a href="Set.html#method-i-intersect-3F">intersect?</a>
+        </div>
         
 
         
@@ -411,7 +545,7 @@ subset and has elements not present in <code>other</code>.</p>
 
           
           <div class="method-source-code" id="proper_subset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 113</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">proper_subset?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">subset?</span>(<span class="ruby-identifier">other</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">other</span>
 <span class="ruby-keyword">end</span></pre>
@@ -445,7 +579,7 @@ is superset and has elements not present in <code>other</code>.</p>
 
           
           <div class="method-source-code" id="proper_superset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 100</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 109</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">proper_superset?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">superset?</span>(<span class="ruby-identifier">other</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">other</span>
 <span class="ruby-keyword">end</span></pre>
@@ -478,7 +612,7 @@ is superset and has elements not present in <code>other</code>.</p>
 
           
           <div class="method-source-code" id="subset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 105</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 114</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">subset?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">other</span>.<span class="ruby-identifier">superset?</span>(<span class="ruby-keyword">self</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -515,7 +649,7 @@ is superset and has elements not present in <code>other</code>.</p>
 
           
           <div class="method-source-code" id="superset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 92</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 101</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">superset?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">other</span>.<span class="ruby-identifier">begin</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">other</span>.<span class="ruby-identifier">end</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -551,14 +685,14 @@ to both ranges. Returns <code>nil</code> if ranges don&#39;t overlap.</p>
 
 <pre>(1..10).union(5..15)
 =&gt; 1..15
-(1..10) | (5..15) # using pipe operator
+(1..10) | (5..15)
 =&gt; 1..15</pre>
           
           
 
           
           <div class="method-source-code" id="union-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 25</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">union</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">validate_operand</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">overlaps?</span>(<span class="ruby-identifier">other</span>)
@@ -573,7 +707,7 @@ to both ranges. Returns <code>nil</code> if ranges don&#39;t overlap.</p>
 
         
         <div class="aliases">
-          Also aliased as: <a href="Set.html#method-i-7C">|</a>
+          Also aliased as: <a href="Set.html#method-i-7C">|</a>, <a href="Set.html#method-i-2B">+</a>
         </div>
         
 

@@ -72,8 +72,6 @@
   
     <li><a href="./Rangops/Set.html">Rangops::Set</a>
   
-    <li><a href="./Rangops/Utils.html">Rangops::Utils</a>
-  
   </ul>
 </div>
 
@@ -90,31 +88,34 @@ aims to treat Ranges as sets.</p>
 
 <p>It provides methods for elementary set related operations and predicates.</p>
 
+<pre class="ruby">    <span class="ruby-keyword">class</span> <span class="ruby-constant">Range</span>
+      <span class="ruby-identifier">include</span> <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>
+    <span class="ruby-keyword">end</span>
+</pre>
+
 <p>Union:</p>
 
 <pre>    (1..5).union(3..10)
-    =&gt; 1..10</pre>
+    =&gt; 1..10
 
-<p>Same operation, more conveniently aliased:</p>
-
-<pre>    (1..5) | (3..10)
-    =&gt; 1..10</pre>
+    (11..19) | (16..23)
+    =&gt; 11..23</pre>
 
 <p>Intersection:</p>
 
 <pre>    (1..5).intersection(3..10)
     =&gt; 3..5
 
-    (1..5) &amp; (3..10)
-    =&gt; 3..5</pre>
+    (11..19) &amp; (16..23)
+    =&gt; 16..19</pre>
 
 <p>Complement, difference operations and subset/superset checking is also
 available. For full list of methods, check <a
 href="https://vojski.github.io/rangops/">API docs</a>.</p>
 
-<p>No mapping of ranges to arrays is performed, so operations on ranges of any
-size are possible without penalty on speed or memory usage. Ranges
-delimited with any numerical values can be operated on.</p>
+<p>No mapping to arrays nor iterating on elements is performed, so operations
+on ranges of any size are possible without penalty on speed or memory
+usage. Ranges delimited with any type of Numerics can be operated.</p>
 
 <pre>    (1.0..10).union(Rational(20, 4)..Float::INFINITY)
     =&gt; 1.0..Infinity</pre>
@@ -123,10 +124,10 @@ delimited with any numerical values can be operated on.</p>
 may be not available if they only make sense for numbers.</p>
 
 <p>Library tries to adhere to conventions established in Ruby core and
-standard library. It only focuses on extending core Range class; only
-ranges or elements covered by them can be used as arguments. Due to the
-properties of Range class, most operations return meaningful results only
-for ranges of the same type.</p>
+<code>Set</code> module from standard library. It only focuses on extending
+core Range class; only ranges or elements covered by them can be used as
+arguments. Due to the properties of Range class, most operations return
+meaningful results only for ranges of the same type.</p>
 
 <h2 id="label-License">License<span><a href="#label-License">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
