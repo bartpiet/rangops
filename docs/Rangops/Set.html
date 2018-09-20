@@ -256,7 +256,7 @@ ranges is returned.</p>
 
           
           <div class="method-source-code" id="complement-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 62</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">complement</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">validate_operand</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">overlaps?</span>(<span class="ruby-identifier">other</span>)
@@ -322,6 +322,7 @@ operands, excluding elements common for both of them. Returns
 
 <pre>(1..10).difference(5..15)
 =&gt; [1..5, 10..15]
+
 (11..19) - (15..28)
 =&gt; [11..15, 19..28]</pre>
           
@@ -329,7 +330,7 @@ operands, excluding elements common for both of them. Returns
 
           
           <div class="method-source-code" id="difference-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 79</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 81</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">difference</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">validate_operand</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">overlaps?</span>(<span class="ruby-identifier">other</span>)
@@ -371,7 +372,7 @@ operands, excluding elements common for both of them. Returns
 
           
           <div class="method-source-code" id="disjoint-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 106</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 111</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">disjoint?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-operator">!</span><span class="ruby-identifier">intersect?</span>(<span class="ruby-identifier">other</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -431,6 +432,7 @@ ranges. Returns <code>nil</code> if ranges don&#39;t overlap.</p>
 
 <pre>(1..10).intersection(5..15)
 =&gt; 5..10
+
 (5..10) &amp; (9..24)
 =&gt; 9..10</pre>
           
@@ -438,7 +440,7 @@ ranges. Returns <code>nil</code> if ranges don&#39;t overlap.</p>
 
           
           <div class="method-source-code" id="intersection-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 46</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">intersection</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">validate_operand</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">overlaps?</span>(<span class="ruby-identifier">other</span>)
@@ -506,14 +508,17 @@ ranges. Returns <code>nil</code> if ranges don&#39;t overlap.</p>
 itself is too useful to be left out. Checks if 2 ranges have any common
 elements.</p>
 
-<p>(1..10).overlaps?(8..15)  =&gt; true  (1..10).overlaps?(11..15)  =&gt;
-false</p>
+<pre> (1..10).overlaps?(8..15)
+ =&gt; true
+
+ (1..10).overlaps?(11..15)
+ =&gt; false</pre>
           
           
 
           
           <div class="method-source-code" id="overlaps-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 99</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 103</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">overlaps?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">other</span>.<span class="ruby-identifier">first</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">first</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -545,15 +550,19 @@ false</p>
         <div class="method-description">
           
           <p>Checks if <code>self</code> is proper subset of <code>other</code>, i.e. is
-subset and has elements not present in <code>other</code>. 
-(1..10).proper_subset?(0..12)  =&gt; true  (1..10).proper_subset?(1..10) 
-=&gt; false</p>
+subset and has elements not present in <code>other</code>.</p>
+
+<pre>(1..10).proper_subset?(0..12)
+=&gt; true
+
+(1..10).proper_subset?(1..10)
+=&gt; false</pre>
           
           
 
           
           <div class="method-source-code" id="proper_subset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 155</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 169</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">proper_subset?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">subset?</span>(<span class="ruby-identifier">other</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">other</span>
 <span class="ruby-keyword">end</span></pre>
@@ -581,15 +590,19 @@ subset and has elements not present in <code>other</code>.
         <div class="method-description">
           
           <p>Checks if <code>self</code> is proper superset of <code>other</code>, i.e.
-is superset and has elements not present in <code>other</code>. 
-(1..10).proper_superset?(2..5)  =&gt; true  (1..10).proper_superset?(1..10)
-=&gt; false</p>
+is superset and has elements not present in <code>other</code>.</p>
+
+<pre>(1..10).proper_superset?(2..5)
+=&gt; true
+
+(1..10).proper_superset?(1..10)
+=&gt; false</pre>
           
           
 
           
           <div class="method-source-code" id="proper_superset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 131</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 140</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">proper_superset?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">superset?</span>(<span class="ruby-identifier">other</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">other</span>
 <span class="ruby-keyword">end</span></pre>
@@ -617,15 +630,22 @@ is superset and has elements not present in <code>other</code>.
         <div class="method-description">
           
           <p>Checks if <code>self</code> is subset of <code>other</code>, i.e. all
-elements of <code>self</code> fit within <code>other</code>. 
-(1..10).subset?(0..12)  =&gt; true  (1..10).subset?(1..10)  =&gt; true 
-(1..10).subset?(5..12)  =&gt; false</p>
+elements of <code>self</code> fit within <code>other</code>.</p>
+
+<pre>(1..10).subset?(0..12)
+=&gt; true
+
+(1..10).subset?(1..10)
+=&gt; true
+
+(1..10).subset?(5..12)
+=&gt; false</pre>
           
           
 
           
           <div class="method-source-code" id="subset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 143</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 155</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">subset?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">other</span>.<span class="ruby-identifier">superset?</span>(<span class="ruby-keyword">self</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -661,8 +681,10 @@ elements of <code>other</code> fit within <code>self</code>.</p>
 
 <pre>(1..10).superset?(2..5)
 =&gt; true
+
 (1..10).superset?(1..10)
 =&gt; true
+
 (1..10).superset?(5..12)
 =&gt; false</pre>
           
@@ -670,7 +692,7 @@ elements of <code>other</code> fit within <code>self</code>.</p>
 
           
           <div class="method-source-code" id="superset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 119</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 126</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">superset?</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">other</span>.<span class="ruby-identifier">begin</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">other</span>.<span class="ruby-identifier">end</span>)
 <span class="ruby-keyword">end</span></pre>
