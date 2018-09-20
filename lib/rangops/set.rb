@@ -8,7 +8,8 @@ module Rangops
   # * relative complement
   # * symmetric difference
   #
-  # along with some convenient aliases.
+  # along with some convenient aliases and predicates.
+  # Loosely follows conventions of `Set` module from standard library.
   # 
   # Operations involving 2 ranges require them to overlap to produce result.
   # If the result of operation cannot be expressed as single range,
@@ -20,7 +21,7 @@ module Rangops
     #
     #     (1..10).union(5..15)
     #     => 1..15
-    #     (1..10) | (5..15) # using pipe operator
+    #     (1..10) | (5..15)
     #     => 1..15
     def union(other)
       validate_operand(other)
@@ -31,13 +32,14 @@ module Rangops
       Range.new(new_begin, upper.end, upper.exclude_end?)
     end
     alias_method :|, :union
+    alias_method :+, :union
 
     # Intersection of 2 ranges. Returns a range covering elements
     # common to both ranges. Returns `nil` if ranges don't overlap.
     #
     #     (1..10).intersection(5..15)
     #     => 5..10
-    #     (1..10) & (5..15) # using ampersand operator
+    #     (1..10) & (5..15)
     #     => 5..10
     def intersection(other)
       validate_operand(other)
@@ -78,6 +80,7 @@ module Rangops
       [Range.new(lower.begin, upper.begin),
       Range.new(lower.end, upper.end, upper.exclude_end?)]
     end
+    alias_method :-, :difference
 
 
     unless Range.respond_to?(:overlaps?)
@@ -86,6 +89,12 @@ module Rangops
       def overlaps?(other)
         cover?(other.first) || other.cover?(first)
       end
+    end
+    alias_method :intersect?, :overlaps?
+
+    # Opposite of `intersect?`.
+    def disjoint?(other)
+      !intersect?(other)
     end
 
     # Checks if `self` is superset of `other`.
