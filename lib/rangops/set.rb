@@ -26,12 +26,7 @@ module Rangops
     #     (1...10) + (10..30)
     #     => nil
     def union(other)
-      validate_operand(other)
-      return nil unless overlaps?(other)
-
-      lower, upper = Utils.sort_by_end(self, other)
-      new_begin = [self.begin, other.begin].min
-      Range.new(new_begin, upper.end, upper.exclude_end?)
+      Rangops::Set.union(self, other)
     end
     alias_method :|, :union
     alias_method :+, :union
@@ -45,12 +40,7 @@ module Rangops
     #     (5..10) & (9..24)
     #     => 9..10
     def intersection(other)
-      validate_operand(other)
-      return nil unless overlaps?(other)
-
-      lower, upper = Utils.sort_by_end(self, other)
-      new_begin = [self.begin, other.begin].max
-      Range.new(new_begin, lower.end, lower.exclude_end?)
+      Rangops::Set.intersection(self, other)
     end
     alias_method :&, :intersection
 
@@ -61,12 +51,7 @@ module Rangops
     #     (1..10).complement(5..15)
     #     => 10..15
     def complement(other)
-      validate_operand(other)
-      return nil unless overlaps?(other)
-
-      lower, upper = Utils.sort_by_end(self, other)
-      new_begin = [self.end, other.end].min
-      Range.new(new_begin, upper.end, upper.exclude_end?)
+      Rangops::Set.complement(self, other)
     end
 
     # Symmetric difference of 2 ranges. Returns ranges covering
@@ -79,37 +64,26 @@ module Rangops
     #     (11..19) - (15..28)
     #     => [11..15, 19..28]
     def difference(other)
-      validate_operand(other)
-      return nil unless overlaps?(other)
-
-      lower, upper = Utils.sort_by_end(self, other)
-      [Range.new(lower.begin, upper.begin),
-      Range.new(lower.end, upper.end, upper.exclude_end?)]
+      Rangops::Set.difference(self, other)
     end
     alias_method :-, :difference
 
 
-    unless Range.respond_to?(:overlaps?)
-
-      # Taken from ActiveSupport - it's not in dependencies,
-      # and the method itself is too useful to be left out.
-      # Checks if 2 ranges have any common elements.
-      #
-      #      (1..10).overlaps?(8..15)
-      #      => true
-      #
-      #      (1..10).overlaps?(11..15)
-      #      => false
-      def overlaps?(other)
-        cover?(other.first) || other.cover?(first)
-      end
-
+    # Checks if 2 ranges have any common elements.
+    #
+    #      (1..10).intersect?(8..15)
+    #      => true
+    #
+    #      (1..10).intersect?(11..15)
+    #      => false
+    def intersect?(other)
+      Rangops::Set.intersect(self, other)
     end
-    alias_method :intersect?, :overlaps?
 
-    # Opposite of `overlaps?` and `intersect?`.
+
+    # Opposite of `intersect?. 
     def disjoint?(other)
-      !intersect?(other)
+      Rangops::Set.disjoint?(self, other)
     end
 
     # Checks if `self` is superset of `other`, i.e. all
@@ -124,7 +98,7 @@ module Rangops
     #     (1..10).superset?(5..12)
     #     => false
     def superset?(other)
-      cover?(other.begin) && cover?(other.end)
+      Rangops::Set.superset?(self, other)
     end
     alias_method :contains?, :superset?
 
@@ -138,7 +112,7 @@ module Rangops
     #     (1..10).proper_superset?(1..10)
     #     => false
     def proper_superset?(other)
-      superset?(other) && self != other
+      Rangops::Set.proper_superset?(self, other)
     end
 
     # Checks if `self` is subset of `other`, i.e. all
@@ -153,7 +127,7 @@ module Rangops
     #     (1..10).subset?(5..12)
     #     => false
     def subset?(other)
-      other.superset?(self)
+      Rangops::Set.subset?(self, other)
     end
     alias_method :is_contained_by?, :subset?
 
@@ -167,16 +141,8 @@ module Rangops
     #     (1..10).proper_subset?(1..10)
     #     => false
     def proper_subset?(other)
-      subset?(other) && self != other
+      Rangops::Set.proper_subset?(self, other)
     end
-
-
-    private
-      def validate_operand(other)
-        unless other.is_a?(Range)
-          raise ArgumentError, "expected a Range, got #{other.class} instead"
-        end
-      end
 
   end
 end
