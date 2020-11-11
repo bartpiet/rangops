@@ -26,7 +26,7 @@ Intersection:
 
 
 Complement, difference operations and subset/superset checking is also available.
-For full list of methods, check [API docs](https://vojski.github.io/rangops/).
+For full list of methods, check [API docs](https://bartpiet.github.io/rangops/).
 
 No mapping to arrays nor iterating on elements is performed, so operations
 on ranges of any size are possible without penalty on speed or memory usage.
