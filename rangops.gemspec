@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "rangops"
   spec.version       = Rangops::VERSION
   spec.authors       = ["Bartosz Pietraszko"]
-  spec.email         = ["bartosz.pietraszko@gmail.com"]
+  spec.email         = ["bartosz.pietraszko@proton.me"]
 
   spec.summary       = 'Simple Ruby extension library for set operations on ranges.'
-  spec.homepage      = "https://vojski.github.io/rangops/"
+  spec.homepage      = "https://bartpiet.github.io/rangops/"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -31,7 +31,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.16"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "minitest", "~> 5.0"
+  spec.required_ruby_version = '>= 2.7.0'
+
+  spec.add_development_dependency "bundler", ">= 2.0"
+  spec.add_development_dependency "rake", ">= 10.0"
+  spec.add_development_dependency "minitest", ">= 5.0"
+
 end

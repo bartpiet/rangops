@@ -6,17 +6,17 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    minitest (5.11.3)
-    rake (10.5.0)
+    minitest (5.25.5)
+    rake (13.3.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
-  minitest (~> 5.0)
-  rake (~> 10.0)
+  bundler (>= 2.0)
+  minitest (>= 5.0)
+  rake (>= 10.0)
   rangops!
 
 BUNDLED WITH
-   1.16.2
+   2.1.2
