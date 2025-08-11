@@ -20,20 +20,32 @@ class RangopsTest < Minitest::Test
     assert_equal (3..10).union(1..5), (1..10)
     assert_equal (1..5).union(3...10), (1...10)
 
+    assert_equal (3..nil).union(1..5), (1..nil)
+    assert_equal (nil..6).union(1..9), (nil..9)
+    assert_equal (nil..nil).union(1..5), (nil..nil)
+
     assert_equal ('a'..'j').union('g'..'m'), ('a'..'m')
     assert_equal ('g'..'z').union('c'..'k'), ('c'..'z')
+
+    assert_equal ('g'..nil).union('c'..'k'), ('c'..nil)
   end
 
   def test_intersection
     assert_equal (1..5).intersection(3..10), (3..5)
+    assert_equal (1..5).intersection(3..nil), (3..5)
+    assert_equal (nil..5).intersection(3..10), (3..5)
+    assert_equal (nil..5).intersection(3..nil), (3..5)
   end
 
   def test_complement
     assert_equal (1..5).complement(3..10), (5..10)
+    assert_equal (1..5).complement(3..nil), (5..nil)
   end
 
   def test_difference
     assert_equal (1..5).difference(3..10), [(1..3), (5..10)]
+    assert_equal (1..5).difference(3..nil), [(1..3), (5..nil)]
+    assert_equal (nil..5).difference(3..10), [(nil..3), (5..10)]
   end
 
 end

@@ -5,26 +5,24 @@ module Rangops
       validate_args(a,b)
       return nil unless intersect?(a, b)
 
-      lower, upper = Utils.sort_by_end(a, b)
-      new_begin = [a.begin, b.begin].min
-      Range.new(new_begin, upper.end, upper.exclude_end?)
+      lower, upper = Utils.sort_by_boundaries(a, b)
+      Range.new(lower.begin, upper.end, upper.exclude_end?)
     end
 
     def self.intersection(a, b)
       validate_args(a, b)
       return nil unless intersect?(a, b)
 
-      lower, upper = Utils.sort_by_end(a, b)
-      new_begin = [a.begin, b.begin].max
-      Range.new(new_begin, lower.end, lower.exclude_end?)
+      lower, upper = Utils.sort_by_boundaries(a, b)
+      Range.new(upper.begin, lower.end, lower.exclude_end?)
     end
 
     def self.complement(a, b)
       validate_args(a, b)
       return nil unless intersect?(a, b)
 
-      lower, upper = Utils.sort_by_end(a, b)
-      new_begin = [a.end, b.end].min
+      _, upper = Utils.sort_by_boundaries(a, b)
+      new_begin = [a.end, b.end].compact.min
       Range.new(new_begin, upper.end, upper.exclude_end?)
     end
 
@@ -32,13 +30,14 @@ module Rangops
       validate_args(a, b)
       return nil unless intersect?(a, b)
 
-      lower, upper = Utils.sort_by_end(a, b)
+      lower, upper = Utils.sort_by_boundaries(a, b)
       [Range.new(lower.begin, upper.begin),
       Range.new(lower.end, upper.end, upper.exclude_end?)]
     end
 
     def self.intersect?(a, b)
-      a.cover?(b.begin) || b.cover?(a.begin)
+      lower, upper = Utils.sort_by_boundaries(a, b)
+      lower.cover?(upper.begin) || upper.cover?(lower.end)
     end
 
     def self.disjoint?(a, b)
