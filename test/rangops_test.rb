@@ -48,4 +48,28 @@ class RangopsTest < Minitest::Test
     assert_equal (nil..5).difference(3..10), [(nil..3), (5..10)]
   end
 
+  def test_intersect
+    assert (1..5).intersect?(3..10)
+    assert (1..5).intersect?(3..nil)
+    assert (nil..5).intersect?(3..10)
+    assert (nil..5).intersect?(3..nil)
+    assert (1..5).intersect?(5..10)
+
+    assert (1..5).disjoint?(7..10)
+    assert (1..5).disjoint?(6..10)
+    assert (1..5).disjoint?(7..nil)
+  end
+
+  def test_superset
+    assert (1..5).superset?(3..4)
+    assert (1..nil).superset?(3..4)
+
+    assert (1..5).superset?(1..5)
+    refute (1..5).proper_subset?(1..5)
+
+    refute (1...5).superset?(1..5)
+    assert (1..5).superset?(1...5)
+    refute (1..5).proper_superset?(1..5)
+  end
+
 end
