@@ -77,7 +77,7 @@ module Rangops
     #      (1..10).intersect?(11..15)
     #      => false
     def intersect?(other)
-      Rangops::Set.intersect(self, other)
+      Rangops::Set.intersect?(self, other)
     end
 
 
