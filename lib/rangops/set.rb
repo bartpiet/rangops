@@ -10,7 +10,7 @@ module Rangops
   #
   # along with some convenient aliases and predicates.
   # Loosely follows conventions of `Set` module from standard library.
-  # 
+  #
   # Operations involving 2 ranges require them to overlap to produce result.
   # If the result of operation cannot be expressed as single range,
   # an array of ranges is returned.
@@ -26,7 +26,11 @@ module Rangops
     #     (1...10) + (10..30)
     #     => nil
     def union(other)
-      Rangops::Set.union(self, other)
+      validate_args(self, other)
+      return nil unless intersect?(other)
+
+      lower, upper = Set.sort_by_boundaries(self, other)
+      Range.new(lower.begin, upper.end, upper.exclude_end?)
     end
     alias_method :|, :union
     alias_method :+, :union
@@ -40,7 +44,11 @@ module Rangops
     #     (5..10) & (9..24)
     #     => 9..10
     def intersection(other)
-      Rangops::Set.intersection(self, other)
+      validate_args(self, other)
+      return nil unless intersect?(other)
+
+      lower, upper = Set.sort_by_boundaries(self, other)
+      Range.new(upper.begin, lower.end, lower.exclude_end?)
     end
     alias_method :&, :intersection
 
@@ -51,7 +59,12 @@ module Rangops
     #     (1..10).complement(5..15)
     #     => 10..15
     def complement(other)
-      Rangops::Set.complement(self, other)
+      validate_args(self, other)
+      return nil unless intersect?(other)
+
+      _, upper = Set.sort_by_boundaries(self, other)
+      new_begin = [self.end, other.end].compact.min
+      Range.new(new_begin, upper.end, upper.exclude_end?)
     end
 
     # Symmetric difference of 2 ranges. Returns ranges covering
@@ -64,7 +77,12 @@ module Rangops
     #     (11..19) - (15..28)
     #     => [11..15, 19..28]
     def difference(other)
-      Rangops::Set.difference(self, other)
+      validate_args(self, other)
+      return nil unless intersect?(other)
+
+      lower, upper = Set.sort_by_boundaries(self, other)
+      [Range.new(lower.begin, upper.begin),
+      Range.new(lower.end, upper.end, upper.exclude_end?)]
     end
     alias_method :-, :difference
 
@@ -77,13 +95,14 @@ module Rangops
     #      (1..10).intersect?(11..15)
     #      => false
     def intersect?(other)
-      Rangops::Set.intersect?(self, other)
+      lower, upper = Set.sort_by_boundaries(self, other)
+      lower.cover?(upper.begin) || upper.cover?(lower.end)
     end
 
 
-    # Opposite of `intersect?. 
+    # Opposite of `intersect?.
     def disjoint?(other)
-      Rangops::Set.disjoint?(self, other)
+      !intersect?(other)
     end
 
     # Checks if `self` is superset of `other`, i.e. all
@@ -98,7 +117,7 @@ module Rangops
     #     (1..10).superset?(5..12)
     #     => false
     def superset?(other)
-      Rangops::Set.superset?(self, other)
+      cover?(other.begin) && cover?(other.end)
     end
     alias_method :contains?, :superset?
 
@@ -112,7 +131,7 @@ module Rangops
     #     (1..10).proper_superset?(1..10)
     #     => false
     def proper_superset?(other)
-      Rangops::Set.proper_superset?(self, other)
+      superset?(other) && self != other
     end
 
     # Checks if `self` is subset of `other`, i.e. all
@@ -127,7 +146,7 @@ module Rangops
     #     (1..10).subset?(5..12)
     #     => false
     def subset?(other)
-      Rangops::Set.subset?(self, other)
+      other.superset?(self)
     end
     alias_method :is_contained_by?, :subset?
 
@@ -141,7 +160,23 @@ module Rangops
     #     (1..10).proper_subset?(1..10)
     #     => false
     def proper_subset?(other)
-      Rangops::Set.proper_subset?(self, other)
+      subset?(other) && self != other
+    end
+
+    private
+
+    def validate_args(*args)
+      args.reject{ |a| a.is_a?(Range) }.each do |arg|
+        raise ArgumentError, "expected a Range, got #{other.class} instead"
+      end
+    end
+
+    # Determine which range has lower begin, and which one higher end.
+    def self.sort_by_boundaries(a, b)
+      ary = [a, b]
+      lower = ary.find{ |r| r.begin.nil? } || ary.sort_by(&:begin).first
+      upper = ary.find{ |r| r.end.nil? }   || ary.sort_by(&:end).last
+      [lower, upper]
     end
 
   end
