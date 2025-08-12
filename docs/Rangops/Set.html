@@ -70,6 +70,13 @@
   
   
   
+  <div class="nav-section">
+    <h3>Class Methods</h3>
+    <ul class="link-list" role="directory">
+      <li ><a href="#method-c-sort_by_boundaries">sort_by_boundaries</a></li>
+    </ul>
+  </div>
+
 
 
   <div class="nav-section">
@@ -152,6 +159,45 @@
 
 
 
+
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section anchor-link">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+      <div id="method-c-sort_by_boundaries" class="method-detail anchor-link ">
+        <div class="method-header">
+            <div class="method-heading">
+              <a href="#method-c-sort_by_boundaries" title="Link to this method">
+                <span class="method-name">sort_by_boundaries</span>
+                <span class="method-args">(a, b)</span>
+              </a>
+            </div>
+        </div>
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+
+        <div class="method-description">
+          <div class="method-source-code" id="sort_by_boundaries-source">
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 175</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">sort_by_boundaries</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>)
+  <span class="ruby-identifier">ary</span> = [<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>]
+  <span class="ruby-identifier">lower</span> = <span class="ruby-identifier">ary</span>.<span class="ruby-identifier">find</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">begin</span>.<span class="ruby-identifier">nil?</span> } <span class="ruby-operator">||</span> <span class="ruby-identifier">ary</span>.<span class="ruby-identifier">sort_by</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:begin</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">upper</span> = <span class="ruby-identifier">ary</span>.<span class="ruby-identifier">find</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">end</span>.<span class="ruby-identifier">nil?</span> }   <span class="ruby-operator">||</span> <span class="ruby-identifier">ary</span>.<span class="ruby-identifier">sort_by</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:end</span>).<span class="ruby-identifier">last</span>
+  [<span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          <p>Determine which range has lower begin, and which one higher end.</p>
+        </div>
+
+
+      </div>
+
+    </section>
 
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section anchor-link">
        <header>
@@ -260,9 +306,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="complement-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 53</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 61</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">complement</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">complement</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">validate_args</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">intersect?</span>(<span class="ruby-identifier">other</span>)
+
+  <span class="ruby-identifier">_</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">sort_by_boundaries</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">new_begin</span> = [<span class="ruby-keyword">self</span>.<span class="ruby-identifier">end</span>, <span class="ruby-identifier">other</span>.<span class="ruby-identifier">end</span>].<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">min</span>
+  <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">new_begin</span>, <span class="ruby-identifier">upper</span>.<span class="ruby-identifier">end</span>, <span class="ruby-identifier">upper</span>.<span class="ruby-identifier">exclude_end?</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Relative complement of 2 ranges. Returns a range covering elements from <code>other</code> that are not covered by <code>self</code>. Returns <code>nil</code> if ranges don’t overlap.</p>
@@ -313,9 +364,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="difference-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 66</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">difference</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">difference</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">validate_args</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">intersect?</span>(<span class="ruby-identifier">other</span>)
+
+  <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">sort_by_boundaries</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  [<span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lower</span>.<span class="ruby-identifier">begin</span>, <span class="ruby-identifier">upper</span>.<span class="ruby-identifier">begin</span>),
+  <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lower</span>.<span class="ruby-identifier">end</span>, <span class="ruby-identifier">upper</span>.<span class="ruby-identifier">end</span>, <span class="ruby-identifier">upper</span>.<span class="ruby-identifier">exclude_end?</span>)]
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Symmetric difference of 2 ranges. Returns ranges covering elements of both operands, excluding elements common for both of them. Returns <code>nil</code> if ranges don’t overlap.</p>
@@ -351,9 +407,9 @@
 
         <div class="method-description">
           <div class="method-source-code" id="disjoint-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 85</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 104</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">disjoint?</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">disjoint?</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-operator">!</span><span class="ruby-identifier">intersect?</span>(<span class="ruby-identifier">other</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Opposite of ‘intersect?.</p>
@@ -380,9 +436,10 @@
 
         <div class="method-description">
           <div class="method-source-code" id="intersect-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 79</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 97</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">intersect?</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">intersect</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">sort_by_boundaries</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">lower</span>.<span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">upper</span>.<span class="ruby-identifier">begin</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">upper</span>.<span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">lower</span>.<span class="ruby-identifier">end</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Checks if 2 ranges have any common elements.</p>
@@ -415,9 +472,13 @@
 
         <div class="method-description">
           <div class="method-source-code" id="intersection-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 42</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">intersection</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">intersection</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">validate_args</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">intersect?</span>(<span class="ruby-identifier">other</span>)
+
+  <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">sort_by_boundaries</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">upper</span>.<span class="ruby-identifier">begin</span>, <span class="ruby-identifier">lower</span>.<span class="ruby-identifier">end</span>, <span class="ruby-identifier">lower</span>.<span class="ruby-identifier">exclude_end?</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Intersection of 2 ranges. Returns a range covering elements common to both ranges. Returns <code>nil</code> if ranges don’t overlap.</p>
@@ -474,9 +535,9 @@
 
         <div class="method-description">
           <div class="method-source-code" id="proper_subset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 143</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 162</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">proper_subset?</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">proper_subset?</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">subset?</span>(<span class="ruby-identifier">other</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">other</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Checks if <code>self</code> is proper subset of <code>other</code>, i.e. is subset and has elements not present in <code>other</code>.</p>
@@ -509,9 +570,9 @@
 
         <div class="method-description">
           <div class="method-source-code" id="proper_superset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 114</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 133</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">proper_superset?</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">proper_superset?</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">superset?</span>(<span class="ruby-identifier">other</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">other</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Checks if <code>self</code> is proper superset of <code>other</code>, i.e. is superset and has elements not present in <code>other</code>.</p>
@@ -544,9 +605,9 @@
 
         <div class="method-description">
           <div class="method-source-code" id="subset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 129</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">subset?</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">subset?</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">other</span>.<span class="ruby-identifier">superset?</span>(<span class="ruby-keyword">self</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Checks if <code>self</code> is subset of <code>other</code>, i.e. all elements of <code>self</code> fit within <code>other</code>.</p>
@@ -585,9 +646,9 @@
 
         <div class="method-description">
           <div class="method-source-code" id="superset-3F-source">
-            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 100</span>
+            <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 119</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">superset?</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">superset?</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">other</span>.<span class="ruby-identifier">begin</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">cover?</span>(<span class="ruby-identifier">other</span>.<span class="ruby-identifier">end</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Checks if <code>self</code> is superset of <code>other</code>, i.e. all elements of <code>other</code> fit within <code>self</code>.</p>
@@ -628,7 +689,11 @@
           <div class="method-source-code" id="union-source">
             <pre><span class="ruby-comment"># File lib/rangops/set.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">union</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>.<span class="ruby-identifier">union</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">validate_args</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">intersect?</span>(<span class="ruby-identifier">other</span>)
+
+  <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">sort_by_boundaries</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">other</span>)
+  <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lower</span>.<span class="ruby-identifier">begin</span>, <span class="ruby-identifier">upper</span>.<span class="ruby-identifier">end</span>, <span class="ruby-identifier">upper</span>.<span class="ruby-identifier">exclude_end?</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Union of 2 ranges. Returns a range covering sum of all elements belonging to both ranges. Returns <code>nil</code> if ranges don’t overlap.</p>
