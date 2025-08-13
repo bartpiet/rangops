@@ -96,7 +96,8 @@ module Rangops
     #      => false
     def intersect?(other)
       lower, upper = Set.sort_by_boundaries(self, other)
-      lower.cover?(upper.begin) || upper.cover?(lower.end)
+      lower.cover?(upper.begin) ||
+        (upper.cover?(lower.end) && !lower.exclude_end?)
     end
 
 

@@ -35,6 +35,7 @@ class RangopsTest < Minitest::Test
     assert_equal (1..5).intersection(3..nil), (3..5)
     assert_equal (nil..5).intersection(3..10), (3..5)
     assert_equal (nil..5).intersection(3..nil), (3..5)
+    assert_nil   (1...5).intersection(5..10)
   end
 
   def test_complement
@@ -58,6 +59,8 @@ class RangopsTest < Minitest::Test
     assert (1..5).disjoint?(7..10)
     assert (1..5).disjoint?(6..10)
     assert (1..5).disjoint?(7..nil)
+
+    refute (1...5).intersect?(5..10)
   end
 
   def test_superset
