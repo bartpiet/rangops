@@ -2,7 +2,7 @@
 
 Rangops is a tiny Ruby extension library that aims to treat Ranges as sets.
 
-FIXME: __Install it with `gem install rangops` or add `gem "rangops"` to your Gemfile.__
+Install it with `gem install rangops` or add `gem "rangops"` to your Gemfile.
 
 It patches `Range` class with methods for basic set related operations
 and predicates, like:
