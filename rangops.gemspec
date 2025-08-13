@@ -13,6 +13,13 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://bartpiet.github.io/rangops/"
   spec.license       = "MIT"
 
+  spec.metadata = {
+    "bug_tracker_uri"   => "https://github.com/bartpiet/rangops/issues",
+    "documentation_uri" => "https://bartpiet.github.io/rangops/",
+    "homepage_uri"      => "https://github.com/bartpiet/rangops",
+    "source_code_uri"   => "https://github.com/bartpiet/rangops",
+  }
+
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
