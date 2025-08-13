@@ -10,7 +10,7 @@
   <meta name="keywords" content="ruby,documentation,Rangops">
 
 
-    <meta name="description" content="Rangops: Rangops Rangops is a simple Ruby extension library that aims to treat Ranges as sets. It provides methods for elementary set related operations and p">
+    <meta name="description" content="Rangops: Rangops Rangops is a tiny Ruby extension library that aims to treat Ranges as sets. it with `gem install rangops` or add `gem &quot;rangops&quot;` to your Gemf">
 
 
 <script type="text/javascript">
@@ -115,41 +115,65 @@
   
 <h1 id="label-Rangops"><a href="Rangops.html"><code>Rangops</code></a><span><a href="#label-Rangops">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
-<p><a href="Rangops.html"><code>Rangops</code></a> is a simple Ruby extension library that aims to treat Ranges as sets.</p>
+<p><a href="Rangops.html"><code>Rangops</code></a> is a tiny Ruby extension library that aims to treat Ranges as sets.</p>
 
-<p>It provides methods for elementary set related operations and predicates.</p>
+<p>FIXME: <strong>Install it with <code>gem install rangops</code> or add <code>gem &quot;rangops&quot;</code> to your Gemfile.</strong></p>
 
-<pre class="ruby">    <span class="ruby-keyword">class</span> <span class="ruby-constant">Range</span>
-      <span class="ruby-identifier">include</span> <span class="ruby-constant">Rangops</span><span class="ruby-operator">::</span><span class="ruby-constant">Set</span>
-    <span class="ruby-keyword">end</span>
-</pre>
+<p>It patches <code>Range</code> class with methods for basic set related operations and predicates, like:</p>
 
 <p>Union:</p>
 
-<pre>    (1..5).union(3..10)
-    =&gt; 1..10
+<pre>(1..5).union(3..10)
+=&gt; 1..10
 
-    (11..19) | (16..23)
-    =&gt; 11..23</pre>
+(1..5) + (3..10)
+=&gt; 1..10</pre>
 
 <p>Intersection:</p>
 
-<pre>    (1..5).intersection(3..10)
-    =&gt; 3..5
+<pre>(1..5).intersection(3..10)
+=&gt; 3..5
 
-    (11..19) &amp; (16..23)
-    =&gt; 16..19</pre>
+(1..5) &amp; (3..10)
+=&gt; 3..5</pre>
 
-<p>Complement, difference operations and subset/superset checking is also available. For full list of methods, check <a href="https://bartpiet.github.io/rangops/">API docs</a>.</p>
+<p>Symmetric difference:</p>
 
-<p>No mapping to arrays nor iterating on elements is performed, so operations on ranges of any size are possible without penalty on speed or memory usage. Ranges delimited with any type of Numerics can be operated.</p>
+<pre>(1..10).difference(5..15)
+=&gt; [1..5, 10..15]
 
-<pre>    (1.0..10).union(Rational(20, 4)..Float::INFINITY)
-    =&gt; 1.0..Infinity</pre>
+(1..10) - (5..15)
+=&gt; [1..5, 10..15]</pre>
 
-<p>It works equally well on string and date ranges, although some operations may be not available if they only make sense for numbers.</p>
+<p>Relative complement:</p>
 
-<p>Library tries to adhere to conventions established in Ruby core and <code>Set</code> module from standard library. It only focuses on extending core Range class; only ranges or elements covered by them can be used as arguments. Due to the properties of Range class, most operations return meaningful results only for ranges of the same type.</p>
+<pre>(1..10).complement(5..15)
+=&gt; 10..15</pre>
+
+<p>Check <a href="https://bartpiet.github.io/rangops/">API docs</a> for full list of aliases and predicates.</p>
+
+<p>There is no mapping to arrays nor iteratons under the hood, just begin/end values comparison - so operations on ranges of any size are possible, with no penalty on speed or memory usage. Ranges delimited with any type of Numerics can be used.</p>
+
+<pre>(1.0..10).union(Rational(20, 4)..Float::INFINITY)
+=&gt; 1.0..Infinity</pre>
+
+<p>Beginless and endless ranges are supported.</p>
+
+<pre>(nil..10).intersection(5..nil)
+=&gt; 5..10
+
+(nil..10).union(5..nil)
+=&gt; nil..nil</pre>
+
+<p>It works well on string and date ranges too.</p>
+
+<pre>(&#39;2025-01-01&#39;..&#39;2026-12-31&#39;) &amp; (&#39;2026-01-01&#39;..&#39;2027-12-31&#39;)
+=&gt; &#39;2026-01-01&#39;..&#39;2026-12-31&#39;
+
+(&#39;a&#39;..&#39;e&#39;) &amp; (&#39;c&#39;..&#39;g&#39;)
+=&gt; &quot;c&quot;..&quot;e&quot;</pre>
+
+<p>Operations are supposed to return a <code>Range</code> result, so they only work on arguments delimited with values of the same type. <code>(1..5) &amp; (&#39;c&#39;..&#39;g&#39;)</code> will just return <code>nil</code></p>
 
 <h2 id="label-License">License<span><a href="#label-License">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
