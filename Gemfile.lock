@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rangops (0.0.1)
+    rangops (1.0.0.beta1)
 
 GEM
   remote: https://rubygems.org/
