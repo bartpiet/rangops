@@ -141,7 +141,15 @@
 <pre>(1..10).complement(5..15)
 =&gt; 10..15</pre>
 
-<p>Check <a href="https://bartpiet.github.io/rangops/">API docs</a> for full list of aliases and predicates.</p>
+<p>Checking for subsets/supersets:</p>
+
+<pre>(2..3).subset?(0..10)
+=&gt; true
+
+(0..10).superset?(2..3)
+=&gt; true</pre>
+
+<p>Check <a href="https://bartpiet.github.io/rangops/Rangops/Set.html">API docs</a> for full list of aliases and predicates.</p>
 
 <p>There is no mapping to arrays nor iteratons under the hood, just begin/end values comparison - so operations on ranges of any size are possible, with no penalty on speed or memory usage. Ranges delimited with any type of Numerics can be used.</p>
 
@@ -156,6 +164,11 @@
 (nil..10).union(5..nil)
 =&gt; nil..nil</pre>
 
+<p>End exclusion is supported too.</p>
+
+<pre>(1...3).intersect?(3..10)
+=&gt; false</pre>
+
 <p>It works well on string and date ranges too.</p>
 
 <pre>(&#39;2025-01-01&#39;..&#39;2026-12-31&#39;) &amp; (&#39;2026-01-01&#39;..&#39;2027-12-31&#39;)
@@ -164,7 +177,7 @@
 (&#39;a&#39;..&#39;e&#39;) &amp; (&#39;c&#39;..&#39;g&#39;)
 =&gt; &quot;c&quot;..&quot;e&quot;</pre>
 
-<p>Operations are supposed to return a <code>Range</code> result, so they only work on arguments delimited with values of the same type. <code>(1..5) &amp; (&#39;c&#39;..&#39;g&#39;)</code> will just return <code>nil</code></p>
+<p>Operations are supposed to return a <code>Range</code> result, so they only work on arguments delimited with values of the same type. <code>(1..5) &amp; (&#39;c&#39;..&#39;g&#39;)</code> will just return <code>nil</code>.</p>
 
 <h2 id="label-License">License<span><a href="#label-License">&para;</a> <a href="#top">&uarr;</a></span></h2>
 

@@ -37,8 +37,16 @@ Relative complement:
     (1..10).complement(5..15)
     => 10..15
 
+Checking for subsets/supersets:
 
-Check [API docs](https://bartpiet.github.io/rangops/) for full list of aliases
+    (2..3).subset?(0..10)
+    => true
+
+    (0..10).superset?(2..3)
+    => true
+
+
+Check [API docs](https://bartpiet.github.io/rangops/Rangops/Set.html) for full list of aliases
 and predicates.
 
 There is no mapping to arrays nor iteratons under the hood,
@@ -57,6 +65,11 @@ Beginless and endless ranges are supported.
     (nil..10).union(5..nil)
     => nil..nil
 
+End exclusion is supported too.
+
+    (1...3).intersect?(3..10)
+    => false
+
 It works well on string and date ranges too.
 
     ('2025-01-01'..'2026-12-31') & ('2026-01-01'..'2027-12-31')
@@ -68,7 +81,7 @@ It works well on string and date ranges too.
 
 Operations are supposed to return a `Range` result, so they only work on 
 arguments delimited with values of the same type.
-`(1..5) & ('c'..'g')` will just return `nil`
+`(1..5) & ('c'..'g')` will just return `nil`.
 
 
 ## License
